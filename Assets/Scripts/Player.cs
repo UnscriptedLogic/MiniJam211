@@ -2,13 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Components;
+using DefaultNamespace;
+using DefaultNamespace.FunctionLibraries;
 
 public class Player : MonoBehaviour
 {
-    [FormerlySerializedAs("movementComponent")]
-    [Header("Movement")]
-    [SerializeField] private MovementPhysicsComponent2D movementPhysicsComponent;
-
     [Header("Ground Check")]
     [SerializeField] private Vector3 groundCheckPoint;
     [SerializeField] private float groundCheckRadius = 0.15f;
@@ -18,6 +16,10 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxJumpCount = 2;
     [SerializeField] private int jumpCounter;
 
+    [Header("Components")]
+    [SerializeField] private MovementPhysicsComponent2D movementPhysicsComponent;
+    [SerializeField] private InteractionComponent interactionComponent;
+    
     public bool IsGrounded { get; private set; }
     
     [Header("Input")]
@@ -33,7 +35,7 @@ public class Player : MonoBehaviour
         jumpAction.performed += OnJumpPerformed;
     }
     
-    void Update()
+    private void Update()
     {
         CheckGrounded();
 
@@ -44,6 +46,11 @@ public class Player : MonoBehaviour
 
         Vector2 velocity = moveAction.ReadValue<Vector2>();
         movementPhysicsComponent.MoveVelocity(velocity);
+
+        if (interactionComponent.HasInteractables)
+        {
+            
+        }
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext _)

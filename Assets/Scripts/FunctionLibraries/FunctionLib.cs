@@ -29,10 +29,10 @@ namespace DefaultNamespace.FunctionLibraries
             return results;
         }
 
-        public static List<GameObject> FilterGameObjectsWithInterface<TInterface>(IEnumerable<GameObject> gameObjects)
+        public static List<(GameObject, TInterface)> FilterGameObjectsWithInterface<TInterface>(IEnumerable<GameObject> gameObjects)
             where TInterface : class
         {
-            List<GameObject> filtered = new List<GameObject>();
+            List<(GameObject, TInterface)> filtered = new List<(GameObject, TInterface)>();
 
             foreach (GameObject go in gameObjects)
             {
@@ -41,17 +41,16 @@ namespace DefaultNamespace.FunctionLibraries
                     continue;
                 }
 
-                TInterface component = go.GetComponent(typeof(TInterface)) as TInterface;
-                if (component != null)
+                if (go.GetComponent(typeof(TInterface)) is TInterface component)
                 {
-                    filtered.Add(go);
+                    filtered.Add((go, component));
                 }
             }
 
             return filtered;
         }
 
-        public static List<GameObject> CircleCheck2DWithInterface<TInterface>(Vector2 center, float radius, LayerMask layerMask)
+        public static List<(GameObject, TInterface)> CircleCheck2DWithInterface<TInterface>(Vector2 center, float radius, LayerMask layerMask)
             where TInterface : class
         {
             List<GameObject> hits = CircleCheck2D(center, radius, layerMask);
@@ -126,7 +125,7 @@ namespace DefaultNamespace.FunctionLibraries
             return wallHit.collider != null;
         }
 
-        public static List<GameObject> RaycastAll2DWithInterface<TInterface>(
+        public static List<(GameObject, TInterface)> RaycastAll2DWithInterface<TInterface>(
             Vector2 origin,
             Vector2 direction,
             float distance,
