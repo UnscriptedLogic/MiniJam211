@@ -1,7 +1,9 @@
+using System;
 using Components;
 using DefaultNamespace;
 using Pathfinding;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class Entity : MonoBehaviour, IInteractable
 {
@@ -28,10 +30,17 @@ public class Entity : MonoBehaviour, IInteractable
 
     [Header("Attention")]
     [SerializeField] private AttentionComponent attentionComponent;
+    [SerializeField] private InteractionComponent interactionComponent;
+    [SerializeField] private float interactionCooldown;
+    private float cooldownTimer;
 
     [SerializeField] private float attentionDecayInterval;
     
     private float decayTimer;
+    
+
+    [SerializeField] private float entityType; //0 = seeker, 1 = giver
+
     
     private void Start()
     {
@@ -58,19 +67,34 @@ public class Entity : MonoBehaviour, IInteractable
 
         FollowPath();
         
+        
         decayTimer += Time.deltaTime;
         if (decayTimer >= attentionDecayInterval)
         {
             decayTimer = 0f;
             attentionComponent.DecayAttention();
         }
+
+        cooldownTimer -= Time.deltaTime;
+
+        if (interactionComponent != null && interactionComponent.HasInteractablesInRange)
+        {
+            OnInteractPerformed();
+        }
     }
 
     private void RequestPath()
     {
         //DEBUG PURPOSES
-        destination = GameObject.FindGameObjectWithTag("Player").transform.position;
-        
+        if (entityType == 0)
+        {
+            destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+        }
+        if (entityType == 1)
+        {
+            destination = GameObject.FindGameObjectWithTag("NPC").transform.position;
+        }
+
         if (seeker == null)
         {
             return;
@@ -86,6 +110,8 @@ public class Entity : MonoBehaviour, IInteractable
             
             seeker.StartPath(transform.position, destination, OnPathCompleted);
         }
+
+        
     }
 
     private void FollowPath()
@@ -150,7 +176,27 @@ public class Entity : MonoBehaviour, IInteractable
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position + groundCheckPoint, groundCheckRadius);
     }
+    private void OnInteractPerformed()
+    {
+        if (interactionComponent.HasInteractablesInRange)
+        {
+            if (interactionComponent == null) return;
+            if (!interactionComponent.HasInteractablesInRange) return;
 
+            var first = interactionComponent.GetFirstInteractableInRange;
+            if (first.Item2 == null) return;
+
+
+            Component targetComponent = first.Item2 as Component;
+            if (targetComponent == null) return;
+
+            if (targetComponent.gameObject == gameObject) return;
+
+            first.Item2.Interact(interactionComponent);
+
+            cooldownTimer = interactionCooldown;
+        }
+    }
     public bool CanInteract(InteractionComponent instigator)
     {
         //For any conditional stuff
