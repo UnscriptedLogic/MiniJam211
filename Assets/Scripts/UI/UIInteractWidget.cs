@@ -1,16 +1,21 @@
+using DefaultNamespace;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIInteractWidget : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private TextMeshProUGUI TMP_text;
+    
+    public void ShowInteract(string key, IInteractable interactable)
     {
+        TMP_text.text = $"Press <b>{key.ToUpper()}</b> to {interactable.GetActionName()}";
         
+        SetVisible(true);
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void SetVisible(bool visible)
     {
-        
+        gameObject.SetActive(visible);
     }
 }

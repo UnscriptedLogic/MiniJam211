@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -26,13 +27,16 @@ public class Player : MonoBehaviour
     [SerializeField] private InputActionAsset input;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction interactAction;
     
     private void Start()
     {
         moveAction = input.FindAction("Move");
         jumpAction = input.FindAction("Jump");
+        interactAction = input.FindAction("Interact");
         
         jumpAction.performed += OnJumpPerformed;
+        interactAction.performed += OnInteractPerformed;
     }
     
     private void Update()
@@ -46,10 +50,14 @@ public class Player : MonoBehaviour
 
         Vector2 velocity = moveAction.ReadValue<Vector2>();
         movementPhysicsComponent.MoveVelocity(velocity);
-
-        if (interactionComponent.HasInteractables)
+        
+        if (interactionComponent.HasInteractablesInRange)
         {
-            
+            interactionComponent.ShowInteract(interactionComponent.GetFirstInteractableInRange.Item2);
+        }
+        else
+        {
+            interactionComponent.HideInteract();
         }
     }
 
@@ -61,6 +69,16 @@ public class Player : MonoBehaviour
             jumpCounter++;
         }
     }
+    
+    private void OnInteractPerformed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Interacted!");
+        if (interactionComponent.HasInteractablesInRange)
+        {
+            interactionComponent.GetFirstInteractableInRange.Item2.Interact(interactionComponent);
+        }
+    }
+
 
     private void CheckGrounded()
     {

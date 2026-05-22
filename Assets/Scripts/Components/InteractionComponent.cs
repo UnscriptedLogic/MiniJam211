@@ -14,19 +14,34 @@ namespace Components
         [SerializeField] private float interactionRange = 1f;
         [SerializeField] private List<(GameObject, IInteractable)> interactables;
 
-        public List<(GameObject, IInteractable)> Interactables => interactables;
-        public bool HasInteractables => interactables.Count > 0;
+        [Header("UI")]
+        [SerializeField] private UIInteractWidget interactWidgetPrefab;
+        [SerializeField] private Vector3 uiOffset = new Vector3(0, 1f, 0);
         
+        private UIInteractWidget interactWidget;
+        
+        private List<(GameObject, IInteractable)> interactablesInRange = new List<(GameObject, IInteractable)>();
+        public List<(GameObject, IInteractable)> InteractablesInRange => interactablesInRange;
+        public bool HasInteractablesInRange => interactablesInRange.Count > 0;
+        public (GameObject, IInteractable) GetFirstInteractableInRange => interactablesInRange[0];
+        
+
+        private void Start()
+        {
+            interactables = new List<(GameObject, IInteractable)>();
+            
+            interactWidget = Instantiate(interactWidgetPrefab, transform.position + uiOffset, Quaternion.identity, transform);
+            interactWidget.SetVisible(false);
+        }
+
         private void FixedUpdate()
         {
-            interactables.Clear();
-            
-            interactables = GetInteractables();
+            interactablesInRange = GetInteractables();
         }
 
         public List<(GameObject, IInteractable)> GetInteractables()
         {
-            List<(GameObject, IInteractable)> circleCheck = FunctionLib.CircleCheck2DWithInterface<IInteractable>(transform.position, 0.2f, LayerMask.GetMask("Default"));
+            List<(GameObject, IInteractable)> circleCheck = FunctionLib.CircleCheck2DWithInterface<IInteractable>(transform.position, interactionRange, LayerMask.GetMask("Default"));
             List<(GameObject, IInteractable)> filtered = new List<(GameObject, IInteractable)>();
             
             for (int i = 0; i < circleCheck.Count; i++)
@@ -41,11 +56,21 @@ namespace Components
 
             return filtered;
         }
+
+        public void ShowInteract(IInteractable interactable)
+        {
+            interactWidget.ShowInteract("E", interactable);
+        }
         
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, interactionRange);
+        }
+
+        public void HideInteract()
+        {
+            interactWidget.SetVisible(false);
         }
     }
 }

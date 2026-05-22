@@ -12,6 +12,7 @@ public class AttentionGivenArgs : EventArgs
 
 //Centralized stuff for attention. We can potentially pull everyone's current attention
 //and do something with it. Probably display it in the UI or stuff.
+
 public class AttentionManager : MonoBehaviour
 {
     public static AttentionManager instance;
@@ -20,8 +21,8 @@ public class AttentionManager : MonoBehaviour
 
     public List<AttentionComponent> AttentionComponents => attentionComponents;
     
-    public static EventHandler<AttentionGivenArgs> OnAttentionGiven;
-    public static EventHandler<AttentionComponent> OnAttentionDepleted;
+    public EventHandler<AttentionGivenArgs> OnAttentionGiven;
+    public EventHandler<AttentionComponent> OnAttentionDepleted;
 
     public void AddAttentionComponent(AttentionComponent attentionComponent)
     {

@@ -7,5 +7,7 @@ namespace DefaultNamespace
         bool CanInteract(InteractionComponent instigator);
         
         void Interact(InteractionComponent instigator);
+        
+        string GetActionName();
     }
 }

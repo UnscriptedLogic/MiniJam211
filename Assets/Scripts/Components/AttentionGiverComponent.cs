@@ -11,6 +11,8 @@ namespace Components
         [SerializeField] private float attentionAmount = 10f;
         [SerializeField] private float attentionMax = 10f;
 
+        public float AttentionValue => attentionAmount;
+        
         public void GiveAttention(float value, AttentionComponent recipient)
         {
             recipient.RecieveAttention(value, this);

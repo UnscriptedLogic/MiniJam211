@@ -25,6 +25,14 @@ namespace Components
             attentionBar = Instantiate(attentionBarPrefab, transform.position + uiOffset, Quaternion.identity, transform);
             
             AttentionManager.instance.AddAttentionComponent(this);
+            
+            SetAttentionValue(attentionValue);
+        }
+
+        public void SetAttentionValue(float value)
+        {
+            attentionValue = value;
+            attentionBar.SetSliderValue(attentionValue/attentionMax);
         }
 
         public void DecayAttention()
@@ -41,7 +49,7 @@ namespace Components
 
         private void AttentionDepleted()
         {
-            AttentionManager.OnAttentionDepleted(this, this);
+            AttentionManager.instance.OnAttentionDepleted(this, this);
         }
 
         public void RecieveAttention(float value, AttentionGiverComponent instigator)
@@ -49,14 +57,14 @@ namespace Components
             attentionValue += value;
             attentionValue = Mathf.Clamp(attentionValue, 0, attentionMax);
             
-            AttentionManager.OnAttentionGiven(this, new AttentionGivenArgs()
+            SetAttentionValue(attentionValue);
+            
+            AttentionManager.instance.OnAttentionGiven(this, new AttentionGivenArgs()
             {
                 value = value,
                 instigator = instigator,
                 recipient = this
             });
-            
-            attentionBar.SetSliderValue(attentionValue/attentionMax);
         }
     }
 

@@ -1,12 +1,15 @@
 using Components;
+using DefaultNamespace;
 using Pathfinding;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour, IInteractable
 {
     [SerializeField] private Vector3 destination;
     [SerializeField] private float nextPointDistance = 0.25f;
     [SerializeField] private float repathInterval = 0.35f;
+    
+    [SerializeField] private float stopRange = 1f;
 
     [SerializeField] private MovementPhysicsComponent2D movement;
     [SerializeField] private Seeker seeker;
@@ -23,6 +26,13 @@ public class Entity : MonoBehaviour
     private float repathTimer;
     private float lastJumpTime = -999f;
 
+    [Header("Attention")]
+    [SerializeField] private AttentionComponent attentionComponent;
+
+    [SerializeField] private float attentionDecayInterval;
+    
+    private float decayTimer;
+    
     private void Start()
     {
         RequestPath();
@@ -47,6 +57,13 @@ public class Entity : MonoBehaviour
         }
 
         FollowPath();
+        
+        decayTimer += Time.deltaTime;
+        if (decayTimer >= attentionDecayInterval)
+        {
+            decayTimer = 0f;
+            attentionComponent.DecayAttention();
+        }
     }
 
     private void RequestPath()
@@ -61,6 +78,12 @@ public class Entity : MonoBehaviour
 
         if (seeker.IsDone())
         {
+            if (Vector3.Distance(destination, transform.position) <= stopRange)
+            {
+                movement.MoveVelocity(Vector2.zero);
+                return;
+            }
+            
             seeker.StartPath(transform.position, destination, OnPathCompleted);
         }
     }
@@ -126,5 +149,25 @@ public class Entity : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position + groundCheckPoint, groundCheckRadius);
+    }
+
+    public bool CanInteract(InteractionComponent instigator)
+    {
+        //For any conditional stuff
+        
+        return true;
+    }
+
+    public void Interact(InteractionComponent instigator)
+    {
+        AttentionGiverComponent attentionGiverComponent = instigator.GetComponent<AttentionGiverComponent>();
+        if (attentionGiverComponent == null) return;
+        
+        attentionGiverComponent.GiveAttention(attentionGiverComponent.AttentionValue, attentionComponent);
+    }
+
+    public string GetActionName()
+    {
+        return "Give Attention";
     }
 }
