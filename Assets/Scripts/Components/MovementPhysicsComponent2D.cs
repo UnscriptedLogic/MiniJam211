@@ -1,7 +1,10 @@
 using UnityEngine;
 
-namespace Componets
+namespace Components
 {
+    //Yo! This class is solely for movement stuff. Anything specific like double jumping and what not
+    //goes into the concerete class
+    
     public class MovementPhysicsComponent2D : MonoBehaviour
     {
         [SerializeField] private float speed = 8f;

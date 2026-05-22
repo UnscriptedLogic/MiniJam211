@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using Componets;
+using Components;
 
 public class Player : MonoBehaviour
 {

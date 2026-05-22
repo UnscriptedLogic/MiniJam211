@@ -1,4 +1,4 @@
-using Componets;
+using Components;
 using Pathfinding;
 using UnityEngine;
 
