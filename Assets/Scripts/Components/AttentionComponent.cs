@@ -10,7 +10,7 @@ namespace Components
     
     public class AttentionComponent : MonoBehaviour
     {
-        [SerializeField] private float attentionValue = 1f;
+        public float attentionValue = 1f;
         [SerializeField] private float attentionDecay = 0.05f;
         [SerializeField] private float attentionMax = 1f;
         

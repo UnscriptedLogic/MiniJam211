@@ -1,7 +1,9 @@
 using System;
+using System.Runtime.CompilerServices;
 using Components;
 using DefaultNamespace;
 using Pathfinding;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -37,11 +39,13 @@ public class Entity : MonoBehaviour, IInteractable
     [SerializeField] private float attentionDecayInterval;
     
     private float decayTimer;
-    
 
     [SerializeField] private float entityType; //0 = seeker, 1 = giver
 
-    
+    [Header("Sprite Stages")]
+    [SerializeField] private Sprite[] attentionSprites;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     private void Start()
     {
         RequestPath();
@@ -81,6 +85,7 @@ public class Entity : MonoBehaviour, IInteractable
         {
             OnInteractPerformed();
         }
+
     }
 
     private void RequestPath()
@@ -215,5 +220,17 @@ public class Entity : MonoBehaviour, IInteractable
     public string GetActionName()
     {
         return "Give Attention";
+    }
+
+    private void UpdateSpriteFromAttention()
+    {
+        //Updates the sprite based on the current attention value, changes every 25% of the attention bar for now, assuming 5 sprites
+        int lastStage = -1;
+        int stage = Mathf.Clamp(Mathf.FloorToInt(attentionComponent.attentionValue / 1 * 4), 0, attentionSprites.Length - 1);
+
+        if (stage == lastStage) return;
+        
+        lastStage = stage;
+        spriteRenderer.sprite = attentionSprites[stage];
     }
 }
