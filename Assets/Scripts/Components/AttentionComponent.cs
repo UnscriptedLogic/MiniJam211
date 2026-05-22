@@ -22,9 +22,12 @@ namespace Components
         
         private void Start()
         {
-            attentionBar = Instantiate(attentionBarPrefab, transform.position + uiOffset, Quaternion.identity, transform);
+            if (attentionBarPrefab != null)
+            {
+                attentionBar = Instantiate(attentionBarPrefab, transform.position + uiOffset, Quaternion.identity, transform);
+            }
             
-            AttentionManager.instance.AddAttentionComponent(this);
+            AttentionManager.instance?.AddAttentionComponent(this);
             
             SetAttentionValue(attentionValue);
         }
@@ -32,14 +35,20 @@ namespace Components
         public void SetAttentionValue(float value)
         {
             attentionValue = value;
-            attentionBar.SetSliderValue(attentionValue/attentionMax);
+            if (attentionBar != null)
+            {
+                attentionBar.SetSliderValue(attentionValue / attentionMax);
+            }
         }
 
         public void DecayAttention()
         {
             attentionValue -= attentionDecay;
             attentionValue = Mathf.Clamp(attentionValue, 0, attentionMax);
-            attentionBar.SetSliderValue(attentionValue/attentionMax);
+            if (attentionBar != null)
+            {
+                attentionBar.SetSliderValue(attentionValue / attentionMax);
+            }
 
             if (attentionValue <= 0)
             {
@@ -49,7 +58,7 @@ namespace Components
 
         private void AttentionDepleted()
         {
-            AttentionManager.instance.OnAttentionDepleted(this, this);
+            AttentionManager.instance?.OnAttentionDepleted?.Invoke(this, this);
         }
 
         public void RecieveAttention(float value, AttentionGiverComponent instigator)
@@ -58,8 +67,8 @@ namespace Components
             attentionValue = Mathf.Clamp(attentionValue, 0, attentionMax);
             
             SetAttentionValue(attentionValue);
-            
-            AttentionManager.instance.OnAttentionGiven(this, new AttentionGivenArgs()
+
+            AttentionManager.instance?.OnAttentionGiven?.Invoke(this, new AttentionGivenArgs()
             {
                 value = value,
                 instigator = instigator,

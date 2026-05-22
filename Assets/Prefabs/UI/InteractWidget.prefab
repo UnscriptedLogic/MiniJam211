@@ -121,6 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIInteractWidget
   TMP_text: {fileID: 263532022720708610}
+  animationDuration: 0.5
+  canvas: {fileID: 4964393366067484641}
+  root: {fileID: 1315305515664299790}
 --- !u!1 &4695567152176683082
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +211,7 @@ GameObject:
   - component: {fileID: 8868104982879469495}
   - component: {fileID: 3641248195787001481}
   - component: {fileID: 6142072911151157394}
+  - component: {fileID: 4964393366067484641}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -301,6 +305,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &4964393366067484641
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6376641401249211703}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6907091268355579578
 GameObject:
   m_ObjectHideFlags: 0

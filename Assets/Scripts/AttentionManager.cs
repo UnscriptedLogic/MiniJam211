@@ -26,7 +26,7 @@ public class AttentionManager : MonoBehaviour
 
     public void AddAttentionComponent(AttentionComponent attentionComponent)
     {
-        if (OnAttentionGiven != null && !attentionComponents.Contains(attentionComponent))
+        if (attentionComponent != null && !attentionComponents.Contains(attentionComponent))
         {
             attentionComponents.Add(attentionComponent);
         }
@@ -34,7 +34,7 @@ public class AttentionManager : MonoBehaviour
     
     public void RemoveAttentionComponent(AttentionComponent attentionComponent)
     {
-        if (OnAttentionDepleted != null && attentionComponents.Contains(attentionComponent))
+        if (attentionComponent != null && attentionComponents.Contains(attentionComponent))
         {
             attentionComponents.Remove(attentionComponent);
         }
@@ -49,5 +49,6 @@ public class AttentionManager : MonoBehaviour
         }
         
         instance = this;
+        attentionComponents = new List<AttentionComponent>();
     }
 }
