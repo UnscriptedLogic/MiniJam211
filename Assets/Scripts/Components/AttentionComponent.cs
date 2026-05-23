@@ -1,6 +1,7 @@
 using System;
 using Components;
 using UI;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Components
@@ -19,7 +20,11 @@ namespace Components
         [SerializeField] private Vector3 uiOffset = new Vector3(0, 1f, 0);
 
         private UIAttentionBar attentionBar;
-        
+
+        [SerializeField] private CinemachineImpulseSource impulseSource;
+
+        [SerializeField] private ParticleSystem heartParticle;
+
         private void Start()
         {
             if (attentionBarPrefab != null)
@@ -52,6 +57,8 @@ namespace Components
 
             if (attentionValue <= 0)
             {
+                ScreenShakeManager.Instance.CameraShake(impulseSource);
+                Debug.Log("Attention Depleted!");
                 AttentionDepleted();
             }
         }
@@ -74,6 +81,16 @@ namespace Components
                 instigator = instigator,
                 recipient = this
             });
+
+            SpawnHeartParticles();
+        }
+
+        private void SpawnHeartParticles()
+        {
+            if (heartParticle != null)
+            {
+                ParticleSystem particles = Instantiate(heartParticle, transform.position, Quaternion.identity);
+            }
         }
     }
 

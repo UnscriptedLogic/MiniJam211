@@ -949,6 +949,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &407863377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6200614847669488088, guid: 1ee18ccdde87c0742812d64339467202, type: 3}
+  m_PrefabInstance: {fileID: 2515562985312758318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
 --- !u!1 &424381717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,6 +1139,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1285,6 +1297,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78c7c3d48abff54ab603b919a8cc43c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManagerScript
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +1570,7 @@ GameObject:
   - component: {fileID: 1024795749}
   - component: {fileID: 1024795748}
   - component: {fileID: 1024795747}
+  - component: {fileID: 1024795750}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -1642,6 +1667,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024795750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024795746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    AmplitudeGain: 4
+    FrequencyGain: 3
+    Duration: 0.5
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1220852945
 GameObject:
   m_ObjectHideFlags: 0
@@ -3412,7 +3461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: AstarPathfindingProject::AstarPath
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAABAIezpGoxFbgIAACUFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMly4jAQ/RVK5yGFgQQ8txmzZA5JqDBTufgirDZWIUsuLQGS4t+nJdvYIVxov+7X/XqxPwmXpoLMKr3WnD0pBuTngHib/Bh0zkc40b2SW/4BbcwbZ7bwQTTEvFLLFeKRpxlVgtU8+yX3wgePEHSS50qXS7aHRBlrEM6pMIAuraxnS4Q+B+SEf8PYU85ojWfe+kArHg0uaGYgLehe6OxuGvtfQ4ia8OhuNp9H09FkuhyOZoHqZCZoWQHzfXQZ7u/bWnUFiR02ET5ZpoTgppFH7LkK7Se0Mg6bwwDGKbYbNPn4Avi+sD5dn/yS5wZsMwtNzwuucWp1VvJb1aMsqTnUut6pcL7OPCiqUz598w6j4M61Kh/bqtHIV7AFzw6v9JxRY3uT7sOLr7KdPFJxoDsBbwXIZ7XWykmGTqudpzoD40X3eG0sKSA7dHgt9QZ0VTftdrHtWn0Pl9D7KRG83HnX3bQGtkKFaYdrAI17+YOCw62YJgWiXsU/A3/pvn9UjWPFtbHoarqUXt5OOe1DyQoNP/fM2URpCQFtNFcgqbDnDWax/f1F3329qjeeFfVvT9hK52zfihtOgHuEW8ZGHa/LMoU6PoEpXpwVXEKn2juecU6JkrK+r/5MWtrW6ZxmPdrecfb1tAjkDxHbPYzzCaXxw/14OI7n8WxGWTyh2W4COQm3xyU2SsWmFtosBbcmu+QS76z9qgzWmlbh1pmmxzX/KFVv5lzmaptpAPlSZ7gKB41F8J1kS8ZxQFuwlsuwb/KZEqGyA7D0migNnS5PVtO0y5KSir8r65GUJOEzkhIPX295o+Gdw9EXb5NdyOU/UEsDBBQAAAgIAABAIeyTv06SbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrRSapqZYUqSmVGacWKipZmpka6RpYWluXliiqVxYnKScWqaUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAABAIezpGoxFbgIAACUFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAABAIeyTv06SbQAAAHgAAAAJACQAAAAAAAAAAAAAALsCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAcwMAAAAA
+    dataString: UEsDBBQAAAgIAACYn+vpGoxFbgIAACUFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMly4jAQ/RVK5yGFgQQ8txmzZA5JqDBTufgirDZWIUsuLQGS4t+nJdvYIVxov+7X/XqxPwmXpoLMKr3WnD0pBuTngHib/Bh0zkc40b2SW/4BbcwbZ7bwQTTEvFLLFeKRpxlVgtU8+yX3wgePEHSS50qXS7aHRBlrEM6pMIAuraxnS4Q+B+SEf8PYU85ojWfe+kArHg0uaGYgLehe6OxuGvtfQ4ia8OhuNp9H09FkuhyOZoHqZCZoWQHzfXQZ7u/bWnUFiR02ET5ZpoTgppFH7LkK7Se0Mg6bwwDGKbYbNPn4Avi+sD5dn/yS5wZsMwtNzwuucWp1VvJb1aMsqTnUut6pcL7OPCiqUz598w6j4M61Kh/bqtHIV7AFzw6v9JxRY3uT7sOLr7KdPFJxoDsBbwXIZ7XWykmGTqudpzoD40X3eG0sKSA7dHgt9QZ0VTftdrHtWn0Pl9D7KRG83HnX3bQGtkKFaYdrAI17+YOCw62YJgWiXsU/A3/pvn9UjWPFtbHoarqUXt5OOe1DyQoNP/fM2URpCQFtNFcgqbDnDWax/f1F3329qjeeFfVvT9hK52zfihtOgHuEW8ZGHa/LMoU6PoEpXpwVXEKn2juecU6JkrK+r/5MWtrW6ZxmPdrecfb1tAjkDxHbPYzzCaXxw/14OI7n8WxGWTyh2W4COQm3xyU2SsWmFtosBbcmu+QS76z9qgzWmlbh1pmmxzX/KFVv5lzmaptpAPlSZ7gKB41F8J1kS8ZxQFuwlsuwb/KZEqGyA7D0migNnS5PVtO0y5KSir8r65GUJOEzkhIPX295o+Gdw9EXb5NdyOU/UEsDBBQAAAgIAACYn+uTv06SbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrRSapqZYUqSmVGacWKipZmpka6RpYWluXliiqVxYnKScWqaUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACYn+vpGoxFbgIAACUFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACYn+uTv06SbQAAAHgAAAAJACQAAAAAAAAAAAAAALsCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAcwMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 4900000, guid: 801b757a1d2b77342862708432d1d89a, type: 3}
     data_cachedStartup: 
@@ -4338,6 +4387,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6200614847669488088, guid: 1ee18ccdde87c0742812d64339467202, type: 3}
+      propertyPath: ImpulseDefinition.ImpulseShape
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4926399174061619243, guid: 1ee18ccdde87c0742812d64339467202, type: 3}
       propertyPath: m_Name
       value: Entity
@@ -4346,6 +4399,10 @@ PrefabInstance:
       propertyPath: stopRange
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7993643361750970364, guid: 1ee18ccdde87c0742812d64339467202, type: 3}
+      propertyPath: impulseSource
+      value: 
+      objectReference: {fileID: 407863377}
     - target: {fileID: 8209978764781011978, guid: 1ee18ccdde87c0742812d64339467202, type: 3}
       propertyPath: speed
       value: 4

@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Components;
 using DefaultNamespace;
 using Pathfinding;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -45,6 +46,7 @@ public class Entity : MonoBehaviour, IInteractable
     [Header("Sprite Stages")]
     [SerializeField] private Sprite[] attentionSprites;
     [SerializeField] private SpriteRenderer spriteRenderer;
+
 
     private void Start()
     {
@@ -228,9 +230,9 @@ public class Entity : MonoBehaviour, IInteractable
         int lastStage = -1;
         int stage = Mathf.Clamp(Mathf.FloorToInt(attentionComponent.attentionValue / 1 * 4), 0, attentionSprites.Length - 1);
 
-        if (stage == lastStage) return;
-        
-        lastStage = stage;
-        spriteRenderer.sprite = attentionSprites[stage];
+        if (stage == lastStage)
+        {
+            return;
+        }
     }
 }

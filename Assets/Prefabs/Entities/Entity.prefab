@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 797246269678014803}
   - component: {fileID: 1482781799919461593}
   - component: {fileID: 6313842286655190770}
+  - component: {fileID: -6200614847669488088}
   m_Layer: 0
   m_Name: Entity
   m_TagString: Untagged
@@ -156,7 +157,12 @@ MonoBehaviour:
   waypointJumpHeightThreshold: 0.2
   jumpCooldown: 0.15
   attentionComponent: {fileID: 7993643361750970364}
+  interactionComponent: {fileID: 0}
+  interactionCooldown: 0
   attentionDecayInterval: 1
+  entityType: 0
+  attentionSprites: []
+  spriteRenderer: {fileID: 0}
 --- !u!114 &8209978764781011978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +196,8 @@ MonoBehaviour:
   attentionMax: 1
   attentionBarPrefab: {fileID: 2028344723152950553, guid: 146ae0ca6313bfa4abb91f49ce8c02b9, type: 3}
   uiOffset: {x: 0, y: 1, z: 0}
+  impulseSource: {fileID: -6200614847669488088}
+  heartEffect: {fileID: 2271587995146559317, guid: 061d2d7f5a68cef44b21e14d3522f970, type: 3}
 --- !u!114 &148922468137625070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,3 +341,56 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-6200614847669488088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926399174061619243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: -1, y: -1, z: 0}
