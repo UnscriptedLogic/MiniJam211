@@ -29,9 +29,12 @@ namespace Components
         private void Start()
         {
             interactables = new List<(GameObject, IInteractable)>();
+            if (interactWidgetPrefab != null)
+            {
+                interactWidget = Instantiate(interactWidgetPrefab, transform.position + uiOffset, Quaternion.identity, transform);
+                interactWidget.SetVisible(false);
+            }
             
-            interactWidget = Instantiate(interactWidgetPrefab, transform.position + uiOffset, Quaternion.identity, transform);
-            interactWidget.SetVisible(false);
         }
 
         private void FixedUpdate()

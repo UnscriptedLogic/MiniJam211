@@ -197,7 +197,7 @@ MonoBehaviour:
   attentionBarPrefab: {fileID: 2028344723152950553, guid: 146ae0ca6313bfa4abb91f49ce8c02b9, type: 3}
   uiOffset: {x: 0, y: 1, z: 0}
   impulseSource: {fileID: -6200614847669488088}
-  heartEffect: {fileID: 2271587995146559317, guid: 061d2d7f5a68cef44b21e14d3522f970, type: 3}
+  heartParticle: {fileID: 2271587995146559317, guid: 061d2d7f5a68cef44b21e14d3522f970, type: 3}
 --- !u!114 &148922468137625070
 MonoBehaviour:
   m_ObjectHideFlags: 0

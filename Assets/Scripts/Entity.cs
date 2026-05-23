@@ -185,7 +185,7 @@ public class Entity : MonoBehaviour, IInteractable
     }
     private void OnInteractPerformed()
     {
-        if (interactionComponent.HasInteractablesInRange)
+        if (interactionComponent.HasInteractablesInRange && cooldownTimer <= 0f)
         {
             if (interactionComponent == null) return;
             if (!interactionComponent.HasInteractablesInRange) return;

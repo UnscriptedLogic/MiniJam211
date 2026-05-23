@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Components;
 using UnityEngine;
 
+
 public class AttentionGivenArgs : EventArgs
 {
     public float value;
@@ -15,6 +16,7 @@ public class AttentionGivenArgs : EventArgs
 
 public class AttentionManager : MonoBehaviour
 {
+    
     public static AttentionManager instance;
     
     private List<AttentionComponent> attentionComponents;
