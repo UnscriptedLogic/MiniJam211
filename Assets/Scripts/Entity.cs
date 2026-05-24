@@ -8,8 +8,22 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
+[System.Serializable]
+public struct EntityDetails
+{
+    [SerializeField] private string name;
+    [SerializeField] private Sprite icon;
+    
+    public string Name => name;
+    public Sprite Icon => icon;
+}
+
 public class Entity : MonoBehaviour, IInteractable
 {
+    [SerializeField] private EntityDetails entityDetails;
+    
+    public EntityDetails EntityDetails => entityDetails;
+    
     [SerializeField] private Vector3 destination;
     [SerializeField] private float nextPointDistance = 0.25f;
     [SerializeField] private float repathInterval = 0.35f;
@@ -93,14 +107,14 @@ public class Entity : MonoBehaviour, IInteractable
     private void RequestPath()
     {
         //DEBUG PURPOSES
-        if (entityType == 0)
-        {
-            destination = GameObject.FindGameObjectWithTag("Player").transform.position;
-        }
-        if (entityType == 1)
-        {
-            destination = GameObject.FindGameObjectWithTag("NPC").transform.position;
-        }
+        // if (entityType == 0)
+        // {
+        //     destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+        // }
+        // if (entityType == 1)
+        // {
+        //     destination = GameObject.FindGameObjectWithTag("NPC").transform.position;
+        // }
 
         if (seeker == null)
         {
@@ -228,7 +242,7 @@ public class Entity : MonoBehaviour, IInteractable
     {
         //Updates the sprite based on the current attention value, changes every 25% of the attention bar for now, assuming 5 sprites
         int lastStage = -1;
-        int stage = Mathf.Clamp(Mathf.FloorToInt(attentionComponent.attentionValue / 1 * 4), 0, attentionSprites.Length - 1);
+        int stage = Mathf.Clamp(Mathf.FloorToInt(attentionComponent.CurrentAttentionValue / 1 * 4), 0, attentionSprites.Length - 1);
 
         if (stage == lastStage)
         {

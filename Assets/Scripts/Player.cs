@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     [Header("Components")]
     [SerializeField] private MovementPhysicsComponent2D movementPhysicsComponent;
     [SerializeField] private InteractionComponent interactionComponent;
+    [SerializeField] private AttentionGiverComponent attentionGiverComponent;
+    
+    public AttentionGiverComponent AttentionGiverComponent => attentionGiverComponent;
     
     public bool IsGrounded { get; private set; }
     
@@ -32,21 +35,26 @@ public class Player : MonoBehaviour
     private InputAction jumpAction;
     private InputAction interactAction;
 
-    [Header("Player Attention")]
-    public UnityEngine.UI.Slider playerAttentionBar;
-    public float playerAttentionValue = 1f;
-    private bool cooldown = false;
-    public GameObject cooldownBar;
+    [Header("UI")] 
+    [SerializeField] private UIPlayerHUD playerHUDPrefab;
+    
+    private UIPlayerHUD playerHUD;
 
-    private void Start()
+    private LevelManagerScript levelManager;
+    
+    public void Initialize(LevelManagerScript levelManager)
     {
+        this.levelManager = levelManager;
+        
+        playerHUD = Instantiate(playerHUDPrefab);
+        playerHUD.Initialize(this, levelManager);
+        
         moveAction = input.FindAction("Move");
         jumpAction = input.FindAction("Jump");
         interactAction = input.FindAction("Interact");
         
         jumpAction.performed += OnJumpPerformed;
         interactAction.performed += OnInteractPerformed;
-        cooldownBar.SetActive(false);
     }
 
     private void Update()
@@ -70,14 +78,14 @@ public class Player : MonoBehaviour
             interactionComponent.HideInteract();
         }
 
-        playerAttentionValue += Time.deltaTime * 0.05f;
-        playerAttentionBar.value = playerAttentionValue;
-
-        if (playerAttentionValue <= 0f)
-        {
-            cooldown = true;
-            cooldownBar.SetActive(true);
-        }
+        // playerAttentionValue += Time.deltaTime * 0.05f;
+        // playerAttentionBar.value = playerAttentionValue;
+        //
+        // if (playerAttentionValue <= 0f)
+        // {
+        //     cooldown = true;
+        //     cooldownBar.SetActive(true);
+        // }
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext _)
@@ -91,17 +99,21 @@ public class Player : MonoBehaviour
     
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log("Interacted!");
-        if (interactionComponent.HasInteractablesInRange && playerAttentionValue >= .1f && !cooldown)
+        if (interactionComponent.HasInteractablesInRange)
         {
             interactionComponent.GetFirstInteractableInRange.Item2.Interact(interactionComponent);
         }
+        
+        // if (interactionComponent.HasInteractablesInRange && playerAttentionValue >= .1f && !cooldown)
+        // {
+        //     interactionComponent.GetFirstInteractableInRange.Item2.Interact(interactionComponent);
+        // }
 
-        if (!cooldown)
-        {
-            playerAttentionValue -= .1f;
-            playerAttentionBar.value = playerAttentionValue;
-        }
+        // if (!cooldown)
+        // {
+        //     playerAttentionValue -= .1f;
+        //     playerAttentionBar.value = playerAttentionValue;
+        // }
         
     }
 

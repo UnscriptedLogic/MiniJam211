@@ -150,7 +150,9 @@ MonoBehaviour:
   jumpCounter: 0
   movementPhysicsComponent: {fileID: 5806013279243407622}
   interactionComponent: {fileID: 1314134368085840990}
+  attentionGiverComponent: {fileID: 4997341439231098530}
   input: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  playerHUDPrefab: {fileID: 2226555449672416914, guid: 7c8f2e35cc614a243926bebcf4859407, type: 3}
 --- !u!114 &5806013279243407622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 309531b88eaeaf34fabef243c387288f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementComponent2D
-  speed: 10
-  friction: 20
+  speed: 8
+  friction: 40
   jumpForce: 28
   rb: {fileID: 5895296755563588060}
 --- !u!114 &4997341439231098530

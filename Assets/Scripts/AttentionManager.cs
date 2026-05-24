@@ -27,7 +27,25 @@ public class AttentionManager : MonoBehaviour
 
     public List<AttentionComponent> AttentionComponents => attentionComponents;
 
-    public HUDScript HUDScript;
+    public void AddAttentionComponent(AttentionComponent attentionComponent)
+    {
+        if (attentionComponent != null && !attentionComponents.Contains(attentionComponent))
+        {
+            attentionComponents.Add(attentionComponent);
+            //attentionComponent.OnAttentionDepleted += HandleAttentionDepleted;
+        }
+    }
+    
+    public void RemoveAttentionComponent(AttentionComponent attentionComponent)
+    {
+        if (attentionComponent != null && attentionComponents.Contains(attentionComponent))
+        {
+            attentionComponents.Remove(attentionComponent);
+            //attentionComponent.OnAttentionDepleted -= HandleAttentionDepleted;
+        }
+    }
+    
+    /*public HUDScript HUDScript;
     private void Awake()
     {
         GameObject[] allObjects = FindObjectsByType<GameObject>();
@@ -49,24 +67,6 @@ public class AttentionManager : MonoBehaviour
 
         instance = this;
         attentionComponents = new List<AttentionComponent>();
-    }
-
-    public void AddAttentionComponent(AttentionComponent attentionComponent)
-    {
-        if (attentionComponent != null && !attentionComponents.Contains(attentionComponent))
-        {
-            attentionComponents.Add(attentionComponent);
-            attentionComponent.OnAttentionDepleted += HandleAttentionDepleted;
-        }
-    }
-    
-    public void RemoveAttentionComponent(AttentionComponent attentionComponent)
-    {
-        if (attentionComponent != null && attentionComponents.Contains(attentionComponent))
-        {
-            attentionComponent.OnAttentionDepleted -= HandleAttentionDepleted;
-            attentionComponents.Remove(attentionComponent);
-        }
     }
 
     public void HandleAttentionDepleted(AttentionComponent depletedNPC)
@@ -100,6 +100,6 @@ public class AttentionManager : MonoBehaviour
                 Debug.Log("All NPCs are dead. Game over.");
             }
         }
-    }   
+    }   */
     
 }

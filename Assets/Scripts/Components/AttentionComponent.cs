@@ -12,7 +12,7 @@ namespace Components
     
     public class AttentionComponent : MonoBehaviour
     {
-        public float attentionValue = 1f;
+        [SerializeField] float currentAttentionValue = 1f;
         [SerializeField] private float attentionDecay = 0.05f;
         [SerializeField] private float attentionMax = 1f;
         
@@ -26,6 +26,9 @@ namespace Components
 
         [SerializeField] private ParticleSystem heartParticle;
 
+        public float CurrentAttentionValue => currentAttentionValue;
+        
+        public event Action<float> OnAttentionChanged;
         public event Action<AttentionComponent> OnAttentionDepleted;
         public event Action<AttentionComponent> OnAttentionGiven;
 
@@ -38,32 +41,35 @@ namespace Components
             
             AttentionManager.instance?.AddAttentionComponent(this);
             
-            SetAttentionValue(attentionValue);
+            SetAttentionValue(currentAttentionValue);
         }
 
         public void SetAttentionValue(float value)
         {
-            attentionValue = value;
+            currentAttentionValue = value;
             if (attentionBar != null)
             {
-                attentionBar.SetSliderValue(attentionValue / attentionMax);
+                attentionBar.SetSliderValue(currentAttentionValue / attentionMax);
             }
         }
 
         public void DecayAttention()
         {
-            attentionValue -= attentionDecay;
-            attentionValue = Mathf.Clamp(attentionValue, 0, attentionMax);
+            currentAttentionValue -= attentionDecay;
+            currentAttentionValue = Mathf.Clamp(currentAttentionValue, 0, attentionMax);
             if (attentionBar != null)
             {
-                attentionBar.SetSliderValue(attentionValue / attentionMax);
+                attentionBar.SetSliderValue(currentAttentionValue / attentionMax);
             }
 
-            if (attentionValue <= 0)
+            OnAttentionChanged?.Invoke(currentAttentionValue);
+            
+            
+            if (currentAttentionValue <= 0)
             {
                 ScreenShakeManager.Instance.CameraShake(impulseSource);
-                Debug.Log("Attention Depleted!");
                 AttentionDepleted();
+                
                 Destroy(gameObject);
             }
         }
@@ -75,12 +81,13 @@ namespace Components
 
         public void RecieveAttention(float value, AttentionGiverComponent instigator)
         {
-            attentionValue += value;
-            attentionValue = Mathf.Clamp(attentionValue, 0, attentionMax);
+            currentAttentionValue += value;
+            currentAttentionValue = Mathf.Clamp(currentAttentionValue, 0, attentionMax);
             
-            SetAttentionValue(attentionValue);
+            SetAttentionValue(currentAttentionValue);
 
             OnAttentionGiven?.Invoke(this);
+            OnAttentionChanged?.Invoke(currentAttentionValue);
 
             SpawnHeartParticles();
         }
