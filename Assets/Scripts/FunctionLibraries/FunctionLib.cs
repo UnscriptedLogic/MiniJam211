@@ -7,6 +7,55 @@ namespace DefaultNamespace.FunctionLibraries
     
     public static class FunctionLib
     {
+        private static readonly HashSet<string> DoOnceKeys = new HashSet<string>();
+        
+        public static bool DoOnce(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                Debug.LogWarning("FunctionLib.DoOnce called with a null or empty key.");
+                return false;
+            }
+
+            return DoOnceKeys.Add(key);
+        }
+        
+        public static bool DoOnce(Object owner, string key)
+        {
+            if (owner == null)
+            {
+                Debug.LogWarning("FunctionLib.DoOnce owner was null.");
+                return false;
+            }
+
+            return DoOnce($"{owner.GetInstanceID()}::{key}");
+        }
+
+        public static void ResetDoOnce(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return;
+            }
+
+            DoOnceKeys.Remove(key);
+        }
+
+        public static void ResetDoOnce(Object owner, string key)
+        {
+            if (owner == null)
+            {
+                return;
+            }
+
+            ResetDoOnce($"{owner.GetInstanceID()}::{key}");
+        }
+
+        public static void ResetAllDoOnce()
+        {
+            DoOnceKeys.Clear();
+        }
+
         public static List<GameObject> CircleCheck2D(Vector2 center, float radius, LayerMask layerMask)
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, layerMask);
