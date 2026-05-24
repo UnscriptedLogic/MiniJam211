@@ -75,7 +75,7 @@ public class Entity : MonoBehaviour, IInteractable
         
         
         decayTimer += Time.deltaTime;
-        if (decayTimer >= attentionDecayInterval)
+        if (decayTimer >= attentionDecayInterval && attentionComponent != null)
         {
             decayTimer = 0f;
             attentionComponent.DecayAttention();

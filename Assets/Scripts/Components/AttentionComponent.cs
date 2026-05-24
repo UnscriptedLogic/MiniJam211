@@ -1,5 +1,6 @@
 using System;
 using Components;
+using Pathfinding;
 using UI;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -24,6 +25,9 @@ namespace Components
         [SerializeField] private CinemachineImpulseSource impulseSource;
 
         [SerializeField] private ParticleSystem heartParticle;
+
+        public event Action<AttentionComponent> OnAttentionDepleted;
+        public event Action<AttentionComponent> OnAttentionGiven;
 
         private void Start()
         {
@@ -60,12 +64,13 @@ namespace Components
                 ScreenShakeManager.Instance.CameraShake(impulseSource);
                 Debug.Log("Attention Depleted!");
                 AttentionDepleted();
+                Destroy(gameObject);
             }
         }
 
         private void AttentionDepleted()
         {
-            AttentionManager.instance?.OnAttentionDepleted?.Invoke(this, this);
+            OnAttentionDepleted?.Invoke(this);
         }
 
         public void RecieveAttention(float value, AttentionGiverComponent instigator)
@@ -75,12 +80,7 @@ namespace Components
             
             SetAttentionValue(attentionValue);
 
-            AttentionManager.instance?.OnAttentionGiven?.Invoke(this, new AttentionGivenArgs()
-            {
-                value = value,
-                instigator = instigator,
-                recipient = this
-            });
+            OnAttentionGiven?.Invoke(this);
 
             SpawnHeartParticles();
         }

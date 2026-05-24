@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Components;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -16,21 +18,45 @@ public class AttentionGivenArgs : EventArgs
 
 public class AttentionManager : MonoBehaviour
 {
-    
+    private int npcCount;   
+    public int npcDeadCount;
+
     public static AttentionManager instance;
     
     private List<AttentionComponent> attentionComponents;
 
     public List<AttentionComponent> AttentionComponents => attentionComponents;
-    
-    public EventHandler<AttentionGivenArgs> OnAttentionGiven;
-    public EventHandler<AttentionComponent> OnAttentionDepleted;
+
+    public HUDScript HUDScript;
+    private void Awake()
+    {
+        GameObject[] allObjects = FindObjectsByType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.name.StartsWith("Seeker") && obj.activeInHierarchy)
+            {
+                npcCount++;
+            }
+        }
+        HUDScript.UpdateNPCCountUI(npcCount);
+        npcDeadCount = 0;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        attentionComponents = new List<AttentionComponent>();
+    }
 
     public void AddAttentionComponent(AttentionComponent attentionComponent)
     {
         if (attentionComponent != null && !attentionComponents.Contains(attentionComponent))
         {
             attentionComponents.Add(attentionComponent);
+            attentionComponent.OnAttentionDepleted += HandleAttentionDepleted;
         }
     }
     
@@ -38,19 +64,42 @@ public class AttentionManager : MonoBehaviour
     {
         if (attentionComponent != null && attentionComponents.Contains(attentionComponent))
         {
+            attentionComponent.OnAttentionDepleted -= HandleAttentionDepleted;
             attentionComponents.Remove(attentionComponent);
         }
     }
-    
-    private void Awake()
+
+    public void HandleAttentionDepleted(AttentionComponent depletedNPC)
     {
-        if (instance != null && instance != this)
+        GameObject[] allObjects = FindObjectsByType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
         {
-            Destroy(gameObject);
-            return;
+            if (obj.name.StartsWith("Seeker") && obj.activeInHierarchy)
+            {
+                npcCount++;
+            }
         }
-        
-        instance = this;
-        attentionComponents = new List<AttentionComponent>();
+        HUDScript.UpdateNPCCountUI(npcCount - npcDeadCount);
+        NPCStatusCheck();
     }
+
+    public void NPCStatusCheck()
+    {
+        foreach (var attention in attentionComponents)
+        {
+            if (attention == null) continue;
+
+            if (attention.attentionValue <= 0)
+            {
+                npcDeadCount++;
+                return;
+            }
+            if (npcDeadCount == npcCount)
+            {
+                Debug.Log("All NPCs are dead. Game over.");
+            }
+        }
+    }   
+    
 }

@@ -5,6 +5,9 @@ using UnityEngine.Serialization;
 using Components;
 using DefaultNamespace;
 using DefaultNamespace.FunctionLibraries;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using UnityEditor.Search;
 
 public class Player : MonoBehaviour
 {
@@ -28,7 +31,13 @@ public class Player : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction interactAction;
-    
+
+    [Header("Player Attention")]
+    public UnityEngine.UI.Slider playerAttentionBar;
+    public float playerAttentionValue = 1f;
+    private bool cooldown = false;
+    public GameObject cooldownBar;
+
     private void Start()
     {
         moveAction = input.FindAction("Move");
@@ -37,8 +46,9 @@ public class Player : MonoBehaviour
         
         jumpAction.performed += OnJumpPerformed;
         interactAction.performed += OnInteractPerformed;
+        cooldownBar.SetActive(false);
     }
-    
+
     private void Update()
     {
         CheckGrounded();
@@ -59,6 +69,15 @@ public class Player : MonoBehaviour
         {
             interactionComponent.HideInteract();
         }
+
+        playerAttentionValue += Time.deltaTime * 0.05f;
+        playerAttentionBar.value = playerAttentionValue;
+
+        if (playerAttentionValue <= 0f)
+        {
+            cooldown = true;
+            cooldownBar.SetActive(true);
+        }
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext _)
@@ -73,10 +92,17 @@ public class Player : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext obj)
     {
         Debug.Log("Interacted!");
-        if (interactionComponent.HasInteractablesInRange)
+        if (interactionComponent.HasInteractablesInRange && playerAttentionValue >= .1f && !cooldown)
         {
             interactionComponent.GetFirstInteractableInRange.Item2.Interact(interactionComponent);
         }
+
+        if (!cooldown)
+        {
+            playerAttentionValue -= .1f;
+            playerAttentionBar.value = playerAttentionValue;
+        }
+        
     }
 
 
