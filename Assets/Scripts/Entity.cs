@@ -2,9 +2,11 @@ using System;
 using System.Runtime.CompilerServices;
 using Components;
 using DefaultNamespace;
+using JetBrains.Annotations;
 using Pathfinding;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -21,13 +23,13 @@ public struct EntityDetails
 public class Entity : MonoBehaviour, IInteractable
 {
     [SerializeField] private EntityDetails entityDetails;
-    
+
     public EntityDetails EntityDetails => entityDetails;
-    
+
     [SerializeField] private Vector3 destination;
     [SerializeField] private float nextPointDistance = 0.25f;
     [SerializeField] private float repathInterval = 0.35f;
-    
+
     [SerializeField] private float stopRange = 1f;
 
     [SerializeField] private MovementPhysicsComponent2D movement;
@@ -52,18 +54,36 @@ public class Entity : MonoBehaviour, IInteractable
     private float cooldownTimer;
 
     [SerializeField] private float attentionDecayInterval;
-    
+
     private float decayTimer;
 
     [SerializeField] private float entityType; //0 = seeker, 1 = giver
 
     [Header("Sprite Stages")]
-    [SerializeField] private Sprite[] attentionSprites;
+    [SerializeField] private Sprite[] animationSprites1;
+    [SerializeField] private Sprite[] animationSprites2;
+    [SerializeField] private Sprite[] animationSprites3;
+    [SerializeField] private Sprite[] animationSprites4;
+    [SerializeField] private Sprite[] animationSprites5;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    //Animation variables
+    private Sprite[] currentAnimation;
+    private int spriteType;
+    private float frameTime = 0.15f;
+    private int currentFrame;
+    private float timer;
 
+    //Movement variables
+    public int boundsMinX;
+    public int boundsMaxX;
+    private float randomX;
+    private bool needsToJump;
+
+    
     private void Start()
     {
+        AnimateSprite(spriteType);
         RequestPath();
     }
 
@@ -75,7 +95,7 @@ public class Entity : MonoBehaviour, IInteractable
             currentWaypoint = 0;
         }
     }
-    
+
     private void Update()
     {
         repathTimer += Time.deltaTime;
@@ -86,8 +106,8 @@ public class Entity : MonoBehaviour, IInteractable
         }
 
         FollowPath();
-        
-        
+
+
         decayTimer += Time.deltaTime;
         if (decayTimer >= attentionDecayInterval && attentionComponent != null)
         {
@@ -102,19 +122,23 @@ public class Entity : MonoBehaviour, IInteractable
             OnInteractPerformed();
         }
 
+        if (currentAnimation != null && currentAnimation.Length > 0)
+        {
+            timer += Time.deltaTime;
+            if (timer >= frameTime)
+            {
+                timer = 0f;
+                currentFrame = (currentFrame + 1) % currentAnimation.Length;
+                spriteRenderer.sprite = currentAnimation[currentFrame];
+            }
+        }
+
     }
 
     private void RequestPath()
     {
         //DEBUG PURPOSES
-        // if (entityType == 0)
-        // {
-        //     destination = GameObject.FindGameObjectWithTag("Player").transform.position;
-        // }
-        // if (entityType == 1)
-        // {
-        //     destination = GameObject.FindGameObjectWithTag("NPC").transform.position;
-        // }
+        GetRandomPosition2D();
 
         if (seeker == null)
         {
@@ -128,11 +152,11 @@ public class Entity : MonoBehaviour, IInteractable
                 movement.MoveVelocity(Vector2.zero);
                 return;
             }
-            
+
             seeker.StartPath(transform.position, destination, OnPathCompleted);
         }
 
-        
+
     }
 
     private void FollowPath()
@@ -176,11 +200,20 @@ public class Entity : MonoBehaviour, IInteractable
             moveDirection.x = 0f;
         }
 
+        if (MathF.Sign(toTarget.x) == -1)
+        {
+            transform.eulerAngles = new Vector2(0, 0);
+        }
+
+        if (MathF.Sign(toTarget.x) == 1)
+        {
+            transform.eulerAngles = new Vector2(0, 180);
+        }
+
         movement.MoveVelocity(moveDirection);
 
-        bool targetIsHigher = toTarget.y > waypointJumpHeightThreshold;
         bool canJump = Time.time >= lastJumpTime + jumpCooldown;
-        if (targetIsHigher && canJump && IsGrounded())
+        if (needsToJump && canJump && IsGrounded())
         {
             movement.Jump();
             lastJumpTime = Time.time;
@@ -221,7 +254,7 @@ public class Entity : MonoBehaviour, IInteractable
     public bool CanInteract(InteractionComponent instigator)
     {
         //For any conditional stuff
-        
+
         return true;
     }
 
@@ -229,7 +262,7 @@ public class Entity : MonoBehaviour, IInteractable
     {
         AttentionGiverComponent attentionGiverComponent = instigator.GetComponent<AttentionGiverComponent>();
         if (attentionGiverComponent == null) return;
-        
+
         attentionGiverComponent.GiveAttention(attentionGiverComponent.AttentionValue, attentionComponent);
     }
 
@@ -238,15 +271,46 @@ public class Entity : MonoBehaviour, IInteractable
         return "Give Attention";
     }
 
-    private void UpdateSpriteFromAttention()
-    {
-        //Updates the sprite based on the current attention value, changes every 25% of the attention bar for now, assuming 5 sprites
-        int lastStage = -1;
-        int stage = Mathf.Clamp(Mathf.FloorToInt(attentionComponent.CurrentAttentionValue / 1 * 4), 0, attentionSprites.Length - 1);
+    
 
-        if (stage == lastStage)
+    public void AnimateSprite(int type)
+    {
+        spriteType = type;
+
+        switch (spriteType)
         {
-            return;
+            case 0:
+                currentAnimation = animationSprites1;
+                break;
+            case 1:
+                currentAnimation = animationSprites2;
+                break;
+            case 2:
+                currentAnimation = animationSprites3;
+                break;
+            case 3:
+                currentAnimation = animationSprites4;
+                break;
         }
+
+        if (currentAnimation != null && currentAnimation.Length > 0)
+        {
+            spriteRenderer.sprite = currentAnimation[currentFrame];
+        }
+    }
+
+    private void GetRandomPosition2D()
+    {
+        randomX = UnityEngine.Random.Range(boundsMinX, boundsMaxX);
+        destination = new Vector2(randomX, transform.position.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("NPC"))
+        {
+            needsToJump = true;
+        }
+        else { needsToJump = false; }
     }
 }

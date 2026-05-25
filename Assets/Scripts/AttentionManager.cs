@@ -18,6 +18,8 @@ public class AttentionGivenArgs : EventArgs
 
 public class AttentionManager : MonoBehaviour
 {
+    [SerializeField] private LevelManagerScript levelManager;
+
     private int npcCount;   
     public int npcDeadCount;
 
@@ -45,9 +47,9 @@ public class AttentionManager : MonoBehaviour
         }
     }
     
-    /*public HUDScript HUDScript;
     private void Awake()
     {
+        npcDeadCount = 0;
         GameObject[] allObjects = FindObjectsByType<GameObject>();
 
         foreach (GameObject obj in allObjects)
@@ -57,7 +59,6 @@ public class AttentionManager : MonoBehaviour
                 npcCount++;
             }
         }
-        HUDScript.UpdateNPCCountUI(npcCount);
         npcDeadCount = 0;
         if (instance != null && instance != this)
         {
@@ -69,37 +70,14 @@ public class AttentionManager : MonoBehaviour
         attentionComponents = new List<AttentionComponent>();
     }
 
-    public void HandleAttentionDepleted(AttentionComponent depletedNPC)
+    public void HandleAttentionDepleted()
     {
-        GameObject[] allObjects = FindObjectsByType<GameObject>();
-
-        foreach (GameObject obj in allObjects)
+        npcDeadCount++;
+        if (npcDeadCount >= 4)
         {
-            if (obj.name.StartsWith("Seeker") && obj.activeInHierarchy)
-            {
-                npcCount++;
-            }
+            levelManager.LevelLost();
         }
-        HUDScript.UpdateNPCCountUI(npcCount - npcDeadCount);
-        NPCStatusCheck();
     }
 
-    public void NPCStatusCheck()
-    {
-        foreach (var attention in attentionComponents)
-        {
-            if (attention == null) continue;
-
-            if (attention.attentionValue <= 0)
-            {
-                npcDeadCount++;
-                return;
-            }
-            if (npcDeadCount == npcCount)
-            {
-                Debug.Log("All NPCs are dead. Game over.");
-            }
-        }
-    }   */
     
 }

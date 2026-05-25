@@ -1,10 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Components;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public class LevelManagerScript : MonoBehaviour
 {
@@ -24,9 +25,17 @@ public class LevelManagerScript : MonoBehaviour
     private List<Entity> entities = new List<Entity>();
     
     public List<Entity> Entities => entities;
-    
+
+    public int levelIndex;
+
+
     private void Start()
     {
+        if (SceneManager.GetActiveScene() != null)
+        {
+            levelIndex = SceneManager.GetActiveScene().buildIndex;
+        }
+
         InitializeTimer();
         
         entities = FindObjectsByType<Entity>().ToList();
@@ -43,15 +52,16 @@ public class LevelManagerScript : MonoBehaviour
         {
             RestartLevel();
         }
+
     }
 
     private void TickTimer()
     {
         if (timeRemaining <= 0f)
         {
+            LevelWon();
             return;
         }
-
         timeRemaining = Mathf.Max(0f, timeRemaining - Time.deltaTime);
         int currentSecond = Mathf.CeilToInt(timeRemaining);
 
@@ -85,6 +95,14 @@ public class LevelManagerScript : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
     
+    public void LevelLost()
+    {
+        SceneManager.LoadScene("Level_Lost"); 
+    }
 
+    public void LevelWon()
+    {
+        SceneManager.LoadScene("Level_Victory");
+    }
     #endregion
 }

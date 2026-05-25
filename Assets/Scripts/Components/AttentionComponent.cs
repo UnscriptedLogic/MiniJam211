@@ -32,6 +32,13 @@ namespace Components
         public event Action<AttentionComponent> OnAttentionDepleted;
         public event Action<AttentionComponent> OnAttentionGiven;
 
+        [SerializeField] private Entity entity;
+        [SerializeField] private AttentionManager attentionManager;
+
+        [Header("Sound")]
+        [SerializeField] private AudioSource deathAudio;
+        [SerializeField] private AudioSource attentionDepletionAudio;
+        [SerializeField] private AudioSource attentionGainAudio;
         private void Start()
         {
             if (attentionBarPrefab != null)
@@ -55,6 +62,26 @@ namespace Components
 
         public void DecayAttention()
         {
+            if (currentAttentionValue <= .8f && currentAttentionValue > .6f)
+            {
+                entity.AnimateSprite(1);
+            }
+
+            if (currentAttentionValue <= .6f && currentAttentionValue > .4f)
+            {
+                entity.AnimateSprite(2);
+            }
+
+            if (currentAttentionValue <= .4f && currentAttentionValue > .2f)
+            {
+                entity.AnimateSprite(3);
+            }
+
+            if (currentAttentionValue <= .2f && currentAttentionValue > 0)
+            {
+                entity.AnimateSprite(4);
+            }
+
             currentAttentionValue -= attentionDecay;
             currentAttentionValue = Mathf.Clamp(currentAttentionValue, 0, attentionMax);
             if (attentionBar != null)
@@ -63,24 +90,45 @@ namespace Components
             }
 
             OnAttentionChanged?.Invoke(currentAttentionValue);
-            
-            
+
             if (currentAttentionValue <= 0)
             {
                 ScreenShakeManager.Instance.CameraShake(impulseSource);
                 AttentionDepleted();
-                
+                deathAudio.Play();
                 Destroy(gameObject);
             }
+
         }
 
         private void AttentionDepleted()
         {
             OnAttentionDepleted?.Invoke(this);
+            attentionManager.HandleAttentionDepleted();
         }
 
         public void RecieveAttention(float value, AttentionGiverComponent instigator)
         {
+            if (currentAttentionValue >= .8f && currentAttentionValue < 1f)
+            {
+                entity.AnimateSprite(0);
+            }
+
+            if (currentAttentionValue >= .6f && currentAttentionValue < .8f)
+            {
+                entity.AnimateSprite(1);
+            }
+
+            if (currentAttentionValue >= .4f && currentAttentionValue < .6f)
+            {
+                entity.AnimateSprite(2);
+            }
+
+            if (currentAttentionValue >= .2f && currentAttentionValue < .4f)
+            {
+                entity.AnimateSprite(3);
+            }
+
             currentAttentionValue += value;
             currentAttentionValue = Mathf.Clamp(currentAttentionValue, 0, attentionMax);
             
@@ -90,6 +138,8 @@ namespace Components
             OnAttentionChanged?.Invoke(currentAttentionValue);
 
             SpawnHeartParticles();
+
+            attentionGainAudio.Play();
         }
 
         private void SpawnHeartParticles()
@@ -99,6 +149,7 @@ namespace Components
                 ParticleSystem particles = Instantiate(heartParticle, transform.position, Quaternion.identity);
             }
         }
+
     }
 
 }
