@@ -27,7 +27,7 @@ public class LevelManagerScript : MonoBehaviour
     public List<Entity> Entities => entities;
 
     public int levelIndex;
-
+    [SerializeField] private LostScreenManager lostScreen;
 
     private void Start()
     {
@@ -53,6 +53,12 @@ public class LevelManagerScript : MonoBehaviour
             RestartLevel();
         }
 
+        GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
+        if (npcs.Length == 0)
+        {
+            lostScreen.levelDied = levelIndex + 1;
+            LevelLost();
+        }
     }
 
     private void TickTimer()

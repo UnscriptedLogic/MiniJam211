@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttentionManager
   levelManager: {fileID: 72435724761873655, guid: 25bae1e77b4896b469bde3fb9b09b4f3, type: 3}
-  npcDeadCount: 0
+  npcDeadCount: 8
+  lostScreen: {fileID: 7817289021054679979, guid: c59c896c74ca71a4f9084406f25bed5f, type: 3}

@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class LostScreenManager : MonoBehaviour
 {
+    public int levelDied;
     [SerializeField] private LevelManagerScript levelManager;
     public void LoadMainMenu()
     {
@@ -11,6 +12,6 @@ public class LostScreenManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(levelManager.levelIndex);
+        SceneManager.LoadScene(levelDied);
     }
 }

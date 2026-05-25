@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Components;
 using Pathfinding;
 using UI;
@@ -94,9 +95,15 @@ namespace Components
             if (currentAttentionValue <= 0)
             {
                 ScreenShakeManager.Instance.CameraShake(impulseSource);
-                AttentionDepleted();
-                deathAudio.Play();
-                Destroy(gameObject);
+                bool isDead = true;
+                if (isDead)
+                {
+                    AttentionDepleted();
+                    deathAudio.Play();
+                    Destroy(gameObject);
+                    isDead = false;
+                }
+                
             }
 
         }

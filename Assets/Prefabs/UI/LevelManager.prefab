@@ -47,3 +47,4 @@ MonoBehaviour:
   timeRemaining: 60
   playerPrefab: {fileID: 6550543985687716255, guid: 67252e720c6f6314e9868e758c15e4f7, type: 3}
   levelIndex: 1
+  lostScreen: {fileID: 7817289021054679979, guid: c59c896c74ca71a4f9084406f25bed5f, type: 3}

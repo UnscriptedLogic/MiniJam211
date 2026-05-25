@@ -168,30 +168,30 @@ MonoBehaviour:
   attentionDecayInterval: 1
   entityType: 0
   animationSprites1:
-  - {fileID: 21300000, guid: 5582eb9566937a94ab29bddc32481288, type: 3}
-  - {fileID: 21300000, guid: af6a26cc58745ec4ab28f8df4922ccf9, type: 3}
-  - {fileID: 21300000, guid: 7757879f206eb1c44811af7cd7d48d8a, type: 3}
-  - {fileID: 21300000, guid: 3e3c168546198aa48b4ea16e69161ef0, type: 3}
+  - {fileID: -5020514758781672274, guid: 51de59f9c096137449e2ae28cf47ffeb, type: 3}
+  - {fileID: -8157403806559461926, guid: 2fa03b0a6791cd74d9369d0fe1e3b38b, type: 3}
+  - {fileID: 7393637447140822919, guid: ec7e504a819b50b47be7b473dc461a3e, type: 3}
+  - {fileID: -1635119059196159038, guid: 6bb4b713c05865b47ae6a33ab55150db, type: 3}
   animationSprites2:
-  - {fileID: 21300000, guid: 2b7cee83b45a8bf44b2ff3ba29c9cd5a, type: 3}
-  - {fileID: 21300000, guid: c2c9f6eb909523344a20ff628d443bf3, type: 3}
-  - {fileID: 21300000, guid: 04626173bd4217e499c455f564bbbe9f, type: 3}
-  - {fileID: 21300000, guid: 41b3befb6c22ebc4693723d104a34518, type: 3}
+  - {fileID: -9163856394461031770, guid: 86962cb2a5b06a44786a0450f829ea12, type: 3}
+  - {fileID: 5474023684466338347, guid: 40a3eaaa4fa2c294b88b4cd42d46572c, type: 3}
+  - {fileID: 5148330881964248699, guid: a57a4701e6e899b4abe8c130dc98efe5, type: 3}
+  - {fileID: -3090774043538018, guid: 3ee34bfacb97ea34b8d6eaabd8d313b3, type: 3}
   animationSprites3:
-  - {fileID: 21300000, guid: 859b916e6ad920a4398919ba658fb929, type: 3}
-  - {fileID: 21300000, guid: 9bd59baa916908e41ade0263af528181, type: 3}
-  - {fileID: 21300000, guid: f771dd491d8005046bffca7acc9525be, type: 3}
-  - {fileID: 21300000, guid: adc0b6fee9a625043b8bc7559955caee, type: 3}
+  - {fileID: 3081803767075380834, guid: c09e42061da011d4c87a09afaa1d7f57, type: 3}
+  - {fileID: -1740465371806981922, guid: 911f5774e4d627443b5fdc076b78385b, type: 3}
+  - {fileID: 6113408768302795413, guid: 9c1ac7270afdfda46be8515125337ad5, type: 3}
+  - {fileID: 5889840621171850545, guid: ffe5ed8c076a56a4bac4937ba7380217, type: 3}
   animationSprites4:
-  - {fileID: 21300000, guid: 00b6e5559ea756747aca6ebfcac6aab9, type: 3}
-  - {fileID: 21300000, guid: 7ba1a9d0a80b9d94ba635dbc18de036b, type: 3}
-  - {fileID: 21300000, guid: fa9a3d15dda2607459b1c202afcdb5db, type: 3}
-  - {fileID: 21300000, guid: a3dc85ce7181dd942b5c115cda442cda, type: 3}
+  - {fileID: 2121007489110619165, guid: 397b591cb3e84bb4fb5e726e76d624d2, type: 3}
+  - {fileID: 157339562763295957, guid: eadb292bcd68a874fa62fb26a055b0d5, type: 3}
+  - {fileID: -757986914722993477, guid: aa77513cfac0d064a98ef1f531bbe2c4, type: 3}
+  - {fileID: 8077101660444750309, guid: e2154f9b0403e4b49af1624db681c73b, type: 3}
   animationSprites5:
-  - {fileID: 21300000, guid: a095dedd61b282d4793b77ac4318b92f, type: 3}
-  - {fileID: 21300000, guid: cf8603da7ab815747a63b1738de0ae0c, type: 3}
-  - {fileID: 21300000, guid: fe98c98fcca081f488871651321ee445, type: 3}
-  - {fileID: 21300000, guid: a59d06eddf887034c8d563c1eaf39bf2, type: 3}
+  - {fileID: -2447957533611469693, guid: 0709ae4235d6b3a498104294a4284bc4, type: 3}
+  - {fileID: -4805474362232562877, guid: 6ea4199a0c0a15c409740ee4865a3877, type: 3}
+  - {fileID: -6108388369658262279, guid: 469b1b17a1fd9614482b314ecabe65c5, type: 3}
+  - {fileID: 6615707451863981085, guid: 3a284e3b850bf574fabe6fc046fa0cbb, type: 3}
   spriteRenderer: {fileID: 5909600981138763752}
   boundsMinX: -20
   boundsMaxX: 26

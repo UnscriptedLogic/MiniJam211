@@ -29,6 +29,8 @@ public class AttentionManager : MonoBehaviour
 
     public List<AttentionComponent> AttentionComponents => attentionComponents;
 
+    public LostScreenManager lostScreen;
+
     public void AddAttentionComponent(AttentionComponent attentionComponent)
     {
         if (attentionComponent != null && !attentionComponents.Contains(attentionComponent))
@@ -72,11 +74,13 @@ public class AttentionManager : MonoBehaviour
 
     public void HandleAttentionDepleted()
     {
-        npcDeadCount++;
-        if (npcDeadCount >= 4)
+        GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
+        if (npcs.Length == 0)
         {
+            lostScreen.levelDied = levelManager.levelIndex + 1;
             levelManager.LevelLost();
         }
+
     }
 
     
