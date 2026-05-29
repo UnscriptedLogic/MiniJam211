@@ -1,15 +1,6 @@
-using System.Collections.Generic;
 using Components;
-using DefaultNamespace;
-using DefaultNamespace.FunctionLibraries;
-using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
